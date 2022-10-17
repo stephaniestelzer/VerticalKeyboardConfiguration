@@ -324,12 +324,68 @@ void clear() {
 }
 void showAlphanumeric(){
   //Add Keys
+  image(One_black, 873, 89, 39,39);
+  image(Two_black, 919, 89, 39,39);
+  image(Three_black, 965, 89, 39,39);
+  image(Four_black, 1011, 89, 39,39);
+  image(Five_black, 1057, 89, 39,39);
+  image(Six_black, 1103, 89, 39,39);
+  image(Seven_black, 1149, 89, 39,39);
+  image(Eight_black, 1195, 89, 39,39);
+  image(Nine_black, 1241, 89, 39,39);
+  
+  image(Zero_black, 873, 136, 39,39);
+  image(A_black, 919, 136, 39, 39);
+  image(B_black, 965, 136, 39, 39);
+  image(C_black, 1011, 136, 39, 39);
+  image(D_black, 1057, 136, 39, 39);
+  image(E_black, 1103, 136, 39, 39);
+  image(F_black, 1149, 136, 39, 39);
+  image(G_black, 1195, 136, 39, 39);
+  image(H_black, 1241, 136, 39, 39);
+  
+  image(I_black, 873, 183, 39, 39);
+  image(J_black, 919, 183, 39, 39);
+  image(K_black, 965, 183, 39, 39);
+  image(L_black, 1011, 183, 39, 39);
+  image(M_black, 1057, 183, 39, 39);
+  image(N_black, 1103, 183, 39, 39);
+  image(O_black, 1149, 183, 39, 39);
+  image(P_black, 1195, 183, 39, 39);
+  image(Q_black, 1241, 183, 39, 39);
+  
+  image(R_black, 873, 230, 39, 39);
+  image(S_black, 919, 230, 39, 39);
+  image(T_black, 965, 230, 39, 39);
+  image(U_black, 1011, 230, 39, 39);
+  image(V_black, 1057, 230, 39, 39);
+  image(W_black, 1103, 230, 39, 39);
+  image(X_black, 1149, 230, 39, 39);
+  image(Y_black, 1195, 230, 39, 39);
+  image(Z_black, 1241, 230, 39, 39);
 }
 void showSymbols(){
   //Add Keys
+  image(tilde_black, 873, 89, 39,39);
+  image(Dash_black, 1057, 89, 39,39);
+  image(Equal_black, 1103, 89, 39,39);
+  image(LeftBracket_black, 873, 136, 39, 39);
+  image(RightBracket_black, 919, 136, 39, 39);
+  image(Backslash_black, 1195, 89, 39, 39);
+  image(Semicolon_black, 1011, 89, 39, 39);
+  image(Quotes_black, 1241, 89, 39, 39);
+  image(Comma_black, 919, 89, 39, 39);
+  image(Period_black, 965, 89, 39, 39);
+  image(Forwardslash_black, 1149, 89, 39, 39);
 }
 void showModifiers(){
   //Add Keys
+  image(Return_black, 873, 183, 66, 39);
+  image(Shift_black, 873, 89, 78, 39);
+  image(Control_black, 873, 136, 44, 39);
+  image(Option_black, 928, 136, 44, 39);
+  image(Command_black, 982, 136, 56, 39);
+  image(Space_black, 873, 230, 156, 39);
 }
 void mousePressed(){
   if (!modeDropdown.isMouseOver()) {    
