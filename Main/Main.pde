@@ -10,6 +10,7 @@ Textfield input;
 //Program Modes
 boolean mapMode = true;
 boolean testerMode = false;
+boolean infoPopup = false;
 boolean alphanumericTab = true;
 boolean symbolsTab = false;
 boolean modifiersTab = false;
@@ -82,6 +83,8 @@ PImage Y_black;
 PImage Z_black;
 
 //Misc
+PImage Info_icon;
+PImage Confirm_Key;
 PImage Alphanumeric_Unselected;
 PImage Symbols_Unselected;
 PImage Modifiers_Unselected;
@@ -168,6 +171,8 @@ void setup() {
   
   
   //Misc
+  Info_icon = loadImage("info_icon.png");
+  Confirm_Key = loadImage("Confirm_Key.png");
   Alphanumeric_Unselected = loadImage("Alphanumeric_Tab_Unselected.png");
   Symbols_Unselected = loadImage("Symbols_Tab_Unselected.png");
   Modifiers_Unselected = loadImage("Modifiers_Tab_Unselected.png");
@@ -191,6 +196,7 @@ void customize(DropdownList dropDown){
 }
 
 void draw() {
+  //General UI Draw
   background(greyBlue25);
   fill(greyBlue50);
   noStroke();
@@ -198,7 +204,10 @@ void draw() {
   rect(853,0,447,780);
   fill(greyBlue75);
   rect(853,67,447,780);
+  image(Info_icon, 801, 16, 35,35);
   cp5.draw();
+  
+  //Mode Checks
   checkMode();
   checkTab();
   
@@ -212,6 +221,7 @@ void draw() {
     drawUnselectedTop();
     drawTester();
   }
+  drawPopup();
 }
 void checkMode(){
   int active = int(modeDropdown.getValue());
@@ -322,6 +332,20 @@ void drawTester(){
 void clear() {
   cp5.get(Textfield.class,"Input").clear();
 }
+void drawPopup(){
+  if(infoPopup){
+  pushMatrix();
+  fill(greyBlue50);
+  rect(100, 226, 670, 278);
+  textAlign(CENTER);
+  fill(white);
+  textSize(20);
+  text("How to use:\nClick on any key in the top palette that you would like to change.\nThen, select your replacement key in the bottom palette. The new key\nwill be automatically saved and ready for use!",
+       430, 310);
+  image(Confirm_Key, 675, 448, 78, 36);
+  popMatrix();
+  }
+}
 void showAlphanumeric(){
   //Add Keys
   image(One_black, 873, 89, 39,39);
@@ -390,6 +414,12 @@ void showModifiers(){
 void mousePressed(){
   if (!modeDropdown.isMouseOver()) {    
     modeDropdown.close();
+  }
+  //801, 16, 35,35
+  if(pmouseX > 801 && pmouseX < 836 && pmouseY > 16 && pmouseY < 51){
+    if(!infoPopup){
+      infoPopup = true;
+    }
   }
   if(pmouseX > 884 && pmouseX < 1007 && pmouseY > 16 && pmouseY < 53){
     if(!alphanumericTab){
