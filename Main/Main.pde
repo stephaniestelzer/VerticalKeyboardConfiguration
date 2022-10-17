@@ -1,8 +1,11 @@
 //Global Variables
-import controlP5.*;
+
 //ControlP5 Items
+import controlP5.*;
 ControlP5 cp5;
+ControlP5 controlFont;
 DropdownList modeDropdown;
+Textfield input;
 boolean mapMode = true;
 boolean testerMode = false;
 
@@ -13,6 +16,9 @@ color greyBlue50 = color(72, 80, 88);
 color greyBlue25 = color(112,117,123);
 color yellow = color(255, 175, 95);
 color white = color(255,255,255);
+
+//UI Font
+PFont font;
 
 PImage tilde_black;
 PImage Semicolon_black;
@@ -70,13 +76,28 @@ PImage X_black;
 PImage Y_black;
 PImage Z_black;
 
+PImage Clear_Key;
 void setup() {
-  size(1300, 731);
+  size(1300, 780);
   pixelDensity(displayDensity());
-  background(greyBlue25);
-  fill(greyBlue50);
-  noStroke();
-  rect(853,0,447,731);
+  font = createFont("Barlow.ttf",13,true);
+    //ControlP5 Items
+  cp5 = new ControlP5(this);
+  cp5.setAutoDraw(false);
+  ControlFont controlFont = new ControlFont(font,13);
+  modeDropdown = cp5.addDropdownList("Mode: Key Map").setPosition(20, 20)
+                  .setFont(controlFont).setOpen(false);
+  customize(modeDropdown);
+  input = cp5.addTextfield("Input")
+     .setPosition(106,145)
+     .setSize(526,40)
+     .setFont(controlFont)
+     .setAutoClear(true)
+     .setCaptionLabel("")
+     .setColorBackground(greyBlue75)
+     .setColorActive(yellow)
+     .setColorForeground(greyBlue75)
+     .setColor(white);
   
   //Hardcoded Unselected Keys
   tilde_black = loadImage("Tilde_Key_Black.png");
@@ -132,9 +153,55 @@ void setup() {
   Command_black = loadImage("Command_Key_Black.png");
   Space_black = loadImage("Space_Key_Black.png");
   Return_black = loadImage("Return_Key_Black.png");
+  
+  Clear_Key = loadImage("Clear_Key.png");
+}
+
+void customize(DropdownList dropDown){
+  dropDown.setBackgroundColor(greyBlue75);
+  dropDown.setItemHeight(37);
+  dropDown.setBarHeight(37);
+  dropDown.setWidth(132);
+  dropDown.setHeight(132);
+  dropDown.addItem("Mode: Key Map", 0);
+  dropDown.addItem("Mode: Key Test", 1);
+  dropDown.setColorBackground(greyBlue75);
+  dropDown.setColorForeground(yellow);
+  dropDown.setColorActive(yellow);
 }
 
 void draw() {
+  background(greyBlue25);
+  fill(greyBlue50);
+  noStroke();
+  textFont(font);
+  rect(853,0,447,780);
+  cp5.draw();
+  checkMode();
+  
+  if(mapMode){
+    //Keymap mode window
+    drawUnselectedTop();
+    input.hide();
+  }
+  else if (testerMode){
+    //Key tester mode window
+    drawUnselectedTop();
+    drawTester();
+  }
+}
+void checkMode(){
+  int active = int(modeDropdown.getValue());
+  if(active == 0){
+    mapMode = true;
+    testerMode = false;
+  }
+  else if(active == 1){
+    mapMode = false;
+    testerMode = true;
+  }
+}
+void drawUnselectedTop(){
   //(imageVar, x coord, y coord, width, height)
   image(tilde_black, 99, 223, 39,39);
   image(One_black, 145, 223, 39,39);
@@ -195,4 +262,21 @@ void draw() {
   image(Space_black, 322, 467, 156, 39);
   image(Command_black, 555, 467, 56, 39);
   image(Option_black, 621, 467, 44, 39);
+}
+void drawTester(){
+  image(Clear_Key, 650 , 145, 78, 36);
+  input.show();
+}
+void clear() {
+  cp5.get(Textfield.class,"Input").clear();
+}
+void mousePressed(){
+  if (!modeDropdown.isMouseOver()) {    
+    modeDropdown.close();
+  }
+  if(testerMode){
+      if(pmouseX > 650 && pmouseX < 728 && pmouseY > 145 && pmouseY < 181){
+    clear();
+  }
+  }
 }
