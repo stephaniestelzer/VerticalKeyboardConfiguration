@@ -6,8 +6,13 @@ ControlP5 cp5;
 ControlP5 controlFont;
 DropdownList modeDropdown;
 Textfield input;
+
+//Program Modes
 boolean mapMode = true;
 boolean testerMode = false;
+boolean alphanumericTab = true;
+boolean symbolsTab = false;
+boolean modifiersTab = false;
 
 //UI Colors
 color greyBlue100 = color(33,43,54);
@@ -76,6 +81,13 @@ PImage X_black;
 PImage Y_black;
 PImage Z_black;
 
+//Misc
+PImage Alphanumeric_Unselected;
+PImage Symbols_Unselected;
+PImage Modifiers_Unselected;
+PImage Alphanumeric_Selected;
+PImage Symbols_Selected;
+PImage Modifiers_Selected;
 PImage Clear_Key;
 void setup() {
   size(1300, 780);
@@ -154,6 +166,14 @@ void setup() {
   Space_black = loadImage("Space_Key_Black.png");
   Return_black = loadImage("Return_Key_Black.png");
   
+  
+  //Misc
+  Alphanumeric_Unselected = loadImage("Alphanumeric_Tab_Unselected.png");
+  Symbols_Unselected = loadImage("Symbols_Tab_Unselected.png");
+  Modifiers_Unselected = loadImage("Modifiers_Tab_Unselected.png");
+  Alphanumeric_Selected = loadImage("Alphanumeric_Tab_Selected.png");
+  Symbols_Selected = loadImage("Symbols_Tab_Selected.png");
+  Modifiers_Selected = loadImage("Modifiers_Tab_Selected.png");
   Clear_Key = loadImage("Clear_Key.png");
 }
 
@@ -176,8 +196,11 @@ void draw() {
   noStroke();
   textFont(font);
   rect(853,0,447,780);
+  fill(greyBlue75);
+  rect(853,67,447,780);
   cp5.draw();
   checkMode();
+  checkTab();
   
   if(mapMode){
     //Keymap mode window
@@ -199,6 +222,35 @@ void checkMode(){
   else if(active == 1){
     mapMode = false;
     testerMode = true;
+  }
+}
+void checkTab(){
+  if(alphanumericTab){
+    //Selected Tab
+    image(Alphanumeric_Selected, 884, 16, 123, 37);
+    showAlphanumeric();
+  }
+  else if(symbolsTab){
+    //Selected Tab
+    image(Symbols_Selected, 1019, 16, 123, 37);
+    showSymbols();
+  }
+  else if(modifiersTab){
+    //Selected Tab
+    image(Modifiers_Selected, 1153, 16, 123, 37);
+    showModifiers();
+  }
+  if(!alphanumericTab){
+    //Unselected Tab
+    image(Alphanumeric_Unselected, 884, 16, 123, 37);
+  }
+  if(!symbolsTab){
+    //Unselected Tab
+    image(Symbols_Unselected, 1019, 16, 123, 37);
+  }
+  if(!modifiersTab){
+    //Unselected Tab
+    image(Modifiers_Unselected, 1153, 16, 123, 37);
   }
 }
 void drawUnselectedTop(){
@@ -270,13 +322,43 @@ void drawTester(){
 void clear() {
   cp5.get(Textfield.class,"Input").clear();
 }
+void showAlphanumeric(){
+  //Add Keys
+}
+void showSymbols(){
+  //Add Keys
+}
+void showModifiers(){
+  //Add Keys
+}
 void mousePressed(){
   if (!modeDropdown.isMouseOver()) {    
     modeDropdown.close();
   }
+  if(pmouseX > 884 && pmouseX < 1007 && pmouseY > 16 && pmouseY < 53){
+    if(!alphanumericTab){
+      alphanumericTab = true;
+      symbolsTab = false;
+      modifiersTab = false;
+    }
+  }
+  if(pmouseX > 1019 && pmouseX < 1142 && pmouseY > 16 && pmouseY < 53){
+    if(!symbolsTab){
+      alphanumericTab = false;
+      symbolsTab = true;
+      modifiersTab = false;
+    }
+  }
+  if(pmouseX > 1153 && pmouseX < 1276 && pmouseY > 16 && pmouseY < 53){
+    if(!modifiersTab){
+      alphanumericTab = false;
+      symbolsTab = false;
+      modifiersTab = true;
+    }
+  }
   if(testerMode){
       if(pmouseX > 650 && pmouseX < 728 && pmouseY > 145 && pmouseY < 181){
-    clear();
-  }
+      clear();
+      }
   }
 }
