@@ -92,6 +92,8 @@ PImage Alphanumeric_Selected;
 PImage Symbols_Selected;
 PImage Modifiers_Selected;
 PImage Clear_Key;
+int msecMap;
+int msecTest;
 void setup() {
   size(1300, 780);
   pixelDensity(displayDensity());
@@ -215,13 +217,17 @@ void draw() {
     //Keymap mode window
     drawUnselectedTop();
     input.hide();
+    msecMap = millis();
   }
   else if (testerMode){
     //Key tester mode window
     drawUnselectedTop();
     drawTester();
+    msecTest = millis();
   }
   drawPopup();
+  println("Time in ms for Mapping:" + msecMap);
+  println("Time in ms for Testing:" + msecTest);
 }
 void checkMode(){
   int active = int(modeDropdown.getValue());
@@ -415,10 +421,14 @@ void mousePressed(){
   if (!modeDropdown.isMouseOver()) {    
     modeDropdown.close();
   }
-  //801, 16, 35,35
   if(pmouseX > 801 && pmouseX < 836 && pmouseY > 16 && pmouseY < 51){
     if(!infoPopup){
       infoPopup = true;
+    }
+  }
+  if(infoPopup){
+    if(pmouseX > 675 && pmouseX < 753 && pmouseY > 448 && pmouseY < 484){
+      infoPopup = false;
     }
   }
   if(pmouseX > 884 && pmouseX < 1007 && pmouseY > 16 && pmouseY < 53){
