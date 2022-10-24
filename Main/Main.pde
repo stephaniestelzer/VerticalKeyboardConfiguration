@@ -8,7 +8,8 @@ DropdownList modeDropdown;
 Textfield input;
 
 //Program Modes
-boolean mapMode = true;
+boolean welcomeMode = true;
+boolean mapMode = false;
 boolean testerMode = false;
 boolean infoPopup = false;
 boolean alphanumericTab = true;
@@ -168,9 +169,11 @@ PImage Alphanumeric_Selected;
 PImage Symbols_Selected;
 PImage Modifiers_Selected;
 PImage Clear_Key;
+PImage Start_Key;
 
 int msecMap;
 int msecTest;
+
 void setup() {
   size(1300, 780);
   pixelDensity(displayDensity());
@@ -313,6 +316,7 @@ void setup() {
   Symbols_Selected = loadImage("Symbols_Tab_Selected.png");
   Modifiers_Selected = loadImage("Modifiers_Tab_Selected.png");
   Clear_Key = loadImage("Clear_Key.png");
+  Start_Key = loadImage("Start_Key.png");
 
   // Loading Image Arrays
   TopKeyboardBlack[0] = tilde_black;
@@ -499,33 +503,39 @@ void draw() {
   fill(greyBlue50);
   noStroke();
   textFont(font);
-  rect(853,0,447,780);
-  fill(greyBlue75);
-  rect(853,67,447,780);
-  image(Info_icon, 801, 16, 35,35);
-  cp5.draw();
-  
-  //Mode Checks
-  checkMode();
-  checkTab();
-  
-  if(mapMode){
-    //Keymap mode window
-    drawUnselectedTop();
-    input.hide();
-    msecMap = millis();
+  if(welcomeMode){
+    pushMatrix();
+    textAlign(CENTER);
+    fill(white);
+    textSize(60);
+    text("Welcome to our\nKeyboard Configuration Menu",640, 175);
+    image(Start_Key, 600, 390, 78, 36);
+    popMatrix();
   }
-  else if (testerMode){
-    //Key tester mode window
-    drawUnselectedTop();
-    drawTester();
-  }
-  drawPopup();
-    msecTest = millis();
-  }
-  drawPopup();
-  println("Time in ms for Mapping:" + msecMap);
-  println("Time in ms for Testing:" + msecTest);
+  else{
+     rect(853,0,447,780);
+    fill(greyBlue75);
+    rect(853,67,447,780);
+    image(Info_icon, 801, 16, 35,35);
+    cp5.draw();
+    checkMode();
+    checkTab();
+    if(mapMode){
+      //Keymap mode window
+      drawUnselectedTop();
+      input.hide();
+      msecMap = millis();
+    }
+    else if (testerMode){
+      //Key tester mode window
+      drawUnselectedTop();
+      drawTester();
+      msecTest = millis();
+    }
+    drawPopup();
+    println("Time in ms for Mapping:" + msecMap);
+    println("Time in ms for Testing:" + msecTest);
+    }
 }
 void checkMode(){
   int active = int(modeDropdown.getValue());
@@ -719,561 +729,445 @@ void mousePressed(){
   if (!modeDropdown.isMouseOver()) {    
     modeDropdown.close();
   }
+    if(pmouseX > 600 && pmouseX < 678 && pmouseY > 390 && pmouseY < 426){
+      if(welcomeMode){
+        welcomeMode = false;
+        mapMode = true;
+        }
+    }
+    if(pmouseX > 801 && pmouseX < 836 && pmouseY > 16 && pmouseY < 51){
+      if(!infoPopup){
+        infoPopup = true;
+      }
+    }
+    if(infoPopup){
+      if(pmouseX > 675 && pmouseX < 753 && pmouseY > 448 && pmouseY < 484){
+        infoPopup = false;
+      }
+    }
   //801, 16, 35,35
-  if(pmouseX > 801 && pmouseX < 836 && pmouseY > 16 && pmouseY < 51){
-    if(!infoPopup){
-      infoPopup = true;
+  if(mapMode){
+    if(pmouseX > 884 && pmouseX < 1007 && pmouseY > 16 && pmouseY < 53){
+      if(!alphanumericTab){
+        alphanumericTab = true;
+        symbolsTab = false;
+        modifiersTab = false;
+      }
     }
+    if(pmouseX > 1019 && pmouseX < 1142 && pmouseY > 16 && pmouseY < 53){
+      if(!symbolsTab){
+        alphanumericTab = false;
+        symbolsTab = true;
+        modifiersTab = false;
+      }
+    }
+    if(pmouseX > 1153 && pmouseX < 1276 && pmouseY > 16 && pmouseY < 53){
+      if(!modifiersTab){
+        alphanumericTab = false;
+        symbolsTab = false;
+        modifiersTab = true;
+      }
+    }
+    if(alphanumericTab){
+      if(pmouseX > 873 && pmouseX < 912 && pmouseY > 89 && pmouseY < 128){
+        DisplayKeyboard[pickedIndex] = One_black;
+      }
+      if(pmouseX > 919 && pmouseX < 958 && pmouseY > 89 && pmouseY < 128){
+        DisplayKeyboard[pickedIndex] = Two_black;
+      }
+      if(pmouseX > 965 && pmouseX < 1004 && pmouseY > 89 && pmouseY < 128){
+        DisplayKeyboard[pickedIndex] = Three_black;
+      }
+      if(pmouseX > 1011 && pmouseX < 1050 && pmouseY > 89 && pmouseY < 128){
+        DisplayKeyboard[pickedIndex] = Four_black;
+      }
+      if(pmouseX > 1057 && pmouseX < 1096 && pmouseY > 89 && pmouseY < 128){
+        DisplayKeyboard[pickedIndex] = Five_black;
+      }
+      if(pmouseX > 1103 && pmouseX < 1142 && pmouseY > 89 && pmouseY < 128){
+        DisplayKeyboard[pickedIndex] = Six_black;
+      }
+      if(pmouseX > 1149 && pmouseX < 1188 && pmouseY > 89 && pmouseY < 128){
+        DisplayKeyboard[pickedIndex] = Seven_black;
+      }
+      if(pmouseX > 1195 && pmouseX < 1234 && pmouseY > 89 && pmouseY < 128){
+        DisplayKeyboard[pickedIndex] = Eight_black;
+      }
+      if(pmouseX > 1241 && pmouseX < 1280 && pmouseY > 89 && pmouseY < 128){
+        DisplayKeyboard[pickedIndex] = Nine_black;
+      }
+      // Second Row
+      if(pmouseX > 873 && pmouseX < 912 && pmouseY > 136 && pmouseY < 175){
+        DisplayKeyboard[pickedIndex] = Zero_black;
+      }
+      if(pmouseX > 919 && pmouseX < 958 && pmouseY > 136 && pmouseY < 175){
+        DisplayKeyboard[pickedIndex] = A_black;
+      }
+      if(pmouseX > 965 && pmouseX < 1004 && pmouseY > 136 && pmouseY < 175){
+        DisplayKeyboard[pickedIndex] = B_black;
+      }
+      if(pmouseX > 1011 && pmouseX < 1050 && pmouseY > 136 && pmouseY < 175){
+        DisplayKeyboard[pickedIndex] = C_black;
+      }
+      if(pmouseX > 1057 && pmouseX < 1096 && pmouseY > 136 && pmouseY < 175){
+        DisplayKeyboard[pickedIndex] = D_black;
+      }
+      if(pmouseX > 1103 && pmouseX < 1142 && pmouseY > 136 && pmouseY < 175){
+        DisplayKeyboard[pickedIndex] = E_black;
+      }
+      if(pmouseX > 1149 && pmouseX < 1188 && pmouseY > 136 && pmouseY < 175){
+        DisplayKeyboard[pickedIndex] = F_black;
+      }
+      if(pmouseX > 1195 && pmouseX < 1234 && pmouseY > 136 && pmouseY < 175){
+        DisplayKeyboard[pickedIndex] = G_black;
+      }
+      if(pmouseX > 1241 && pmouseX < 1280 && pmouseY > 136 && pmouseY < 175){
+        DisplayKeyboard[pickedIndex] = H_black;
+      }
+      // Third Row
+      if(pmouseX > 873 && pmouseX < 912 && pmouseY > 183 && pmouseY < 222){
+        DisplayKeyboard[pickedIndex] = I_black;
+      }
+      if(pmouseX > 919 && pmouseX < 958 && pmouseY > 183 && pmouseY < 222){
+        DisplayKeyboard[pickedIndex] = J_black;
+      }
+      if(pmouseX > 965 && pmouseX < 1004 && pmouseY > 183 && pmouseY < 222){
+        DisplayKeyboard[pickedIndex] = K_black;
+      }
+      if(pmouseX > 1011 && pmouseX < 1050 && pmouseY > 183 && pmouseY < 222){
+        DisplayKeyboard[pickedIndex] = L_black;
+      }
+      if(pmouseX > 1057 && pmouseX < 1096 && pmouseY > 183 && pmouseY < 222){
+        DisplayKeyboard[pickedIndex] = M_black;
+      }
+      if(pmouseX > 1103 && pmouseX < 1142 && pmouseY > 183 && pmouseY < 222){
+        DisplayKeyboard[pickedIndex] = N_black;
+      }
+      if(pmouseX > 1149 && pmouseX < 1188 && pmouseY > 183 && pmouseY < 222){
+        DisplayKeyboard[pickedIndex] = O_black;
+      }
+      if(pmouseX > 1195 && pmouseX < 1234 && pmouseY > 183 && pmouseY < 222){
+        DisplayKeyboard[pickedIndex] = P_black;
+      }
+      if(pmouseX > 1241 && pmouseX < 1280 && pmouseY > 183 && pmouseY < 222){
+        DisplayKeyboard[pickedIndex] = Q_black;
+      }
+      // Fourth Row
+      if(pmouseX > 873 && pmouseX < 912 && pmouseY > 230 && pmouseY < 230){
+        DisplayKeyboard[pickedIndex] = R_black;
+      }
+      if(pmouseX > 919 && pmouseX < 958 && pmouseY > 230 && pmouseY < 269){
+        DisplayKeyboard[pickedIndex] = S_black;
+      }
+      if(pmouseX > 965 && pmouseX < 1004 && pmouseY > 230 && pmouseY < 269){
+        DisplayKeyboard[pickedIndex] = T_black;
+      }
+      if(pmouseX > 1011 && pmouseX < 1050 && pmouseY > 230 && pmouseY < 269){
+        DisplayKeyboard[pickedIndex] = U_black;
+      }
+      if(pmouseX > 1057 && pmouseX < 1096 && pmouseY > 230 && pmouseY < 269){
+        DisplayKeyboard[pickedIndex] = V_black;
+      }
+      if(pmouseX > 1103 && pmouseX < 1142 && pmouseY > 230 && pmouseY < 269){
+        DisplayKeyboard[pickedIndex] = W_black;
+      }
+      if(pmouseX > 1149 && pmouseX < 1188 && pmouseY > 230 && pmouseY < 269){
+        DisplayKeyboard[pickedIndex] = X_black;
+      }
+      if(pmouseX > 1195 && pmouseX < 1234 && pmouseY > 230 && pmouseY < 269){
+        DisplayKeyboard[pickedIndex] = Y_black;
+      }
+      if(pmouseX > 1241 && pmouseX < 1280 && pmouseY > 230 && pmouseY < 269){
+        DisplayKeyboard[pickedIndex] = Z_black;
+      }
+    }
+    if(symbolsTab){
+      if(pmouseX > 873 && pmouseX < 912 && pmouseY > 89 && pmouseY < 128){
+        DisplayKeyboard[pickedIndex] = tilde_black;
+      }
+      if(pmouseX > 1057 && pmouseX < 1096 && pmouseY > 89 && pmouseY < 128){
+        DisplayKeyboard[pickedIndex] = Dash_black;
+      }
+      if(pmouseX > 1103 && pmouseX < 1142 && pmouseY > 89 && pmouseY < 128){
+        DisplayKeyboard[pickedIndex] = Equal_black;
+      }
+      if(pmouseX > 873 && pmouseX < 912 && pmouseY > 136 && pmouseY < 175){
+        DisplayKeyboard[pickedIndex] = LeftBracket_black;
+      }
+      if(pmouseX > 919 && pmouseX < 958 && pmouseY > 136 && pmouseY < 175){
+        DisplayKeyboard[pickedIndex] = RightBracket_black;
+      }
+      if(pmouseX > 1195 && pmouseX < 1234 && pmouseY > 89 && pmouseY < 128){
+        DisplayKeyboard[pickedIndex] = Backslash_black;
+      }
+      if(pmouseX > 1011 && pmouseX < 1050 && pmouseY > 89 && pmouseY < 128){
+        DisplayKeyboard[pickedIndex] = Semicolon_black;
+      }
+      if(pmouseX > 1241 && pmouseX < 1280 && pmouseY > 89 && pmouseY < 128){
+        DisplayKeyboard[pickedIndex] = Quotes_black;
+      }
+      if(pmouseX > 919 && pmouseX < 958 && pmouseY > 89 && pmouseY < 128){
+        DisplayKeyboard[pickedIndex] = Comma_black;
+      }
+      if(pmouseX > 965 && pmouseX < 1004 && pmouseY > 89 && pmouseY < 128){
+        DisplayKeyboard[pickedIndex] = Period_black;
+      }
+      if(pmouseX > 1149 && pmouseX < 1188 && pmouseY > 89 && pmouseY < 128){
+        DisplayKeyboard[pickedIndex] = Forwardslash_black;
+      }
+    }
+    if(modifiersTab){
+      if(pmouseX > 873 && pmouseX < 912 && pmouseY > 183 && pmouseY < 222){
+        DisplayKeyboard[pickedIndex] = Return_black;
+      }
+      if(pmouseX > 873 && pmouseX < 951 && pmouseY > 89 && pmouseY < 128){
+        DisplayKeyboard[pickedIndex] = Shift_black;
+      }
+      if(pmouseX > 873 && pmouseX < 912 && pmouseY > 136 && pmouseY < 175){
+        DisplayKeyboard[pickedIndex] = Control_black;
+      }
+      if(pmouseX > 928 && pmouseX < 967 && pmouseY > 136 && pmouseY < 175){
+        DisplayKeyboard[pickedIndex] = Option_black;
+      }
+      if(pmouseX > 982 && pmouseX < 1038 && pmouseY > 136 && pmouseY < 175){
+        DisplayKeyboard[pickedIndex] = Command_black;
+      }
+      if(pmouseX > 873 && pmouseX < 1029 && pmouseY > 230 && pmouseY < 269){
+        DisplayKeyboard[pickedIndex] = Space_black;
+      }
+    }
+    // Key Selection
+    // First Row
+    if(pmouseX > 99 && pmouseX < 145 && pmouseY > 223 && pmouseY < 262){
+      DisplayKeyboard[0] = TopKeyboardYellow[0];
+      pickedIndex = 0;
+      println("0");
+    }
+    if(pmouseX > 145 && pmouseX < 191 && pmouseY > 223 && pmouseY < 262){
+      DisplayKeyboard[1] = TopKeyboardYellow[1];
+      pickedIndex = 1;
+      }
+      if(pmouseX > 191 && pmouseX < 237 && pmouseY > 223 && pmouseY < 262){
+      DisplayKeyboard[2] = TopKeyboardYellow[2];
+      pickedIndex = 2;
+      }
+      if(pmouseX > 237 && pmouseX < 283 && pmouseY > 223 && pmouseY < 262){
+      DisplayKeyboard[3] = TopKeyboardYellow[3];
+      pickedIndex = 3;
+      }
+      if(pmouseX > 283 && pmouseX < 329 && pmouseY > 223 && pmouseY < 262){
+      DisplayKeyboard[4] = TopKeyboardYellow[4];
+      pickedIndex = 4;
+      }
+      if(pmouseX > 329 && pmouseX < 375 && pmouseY > 223 && pmouseY < 262){
+      DisplayKeyboard[5] = TopKeyboardYellow[5];
+      pickedIndex = 5;
+      }
+      if(pmouseX > 375 && pmouseX < 421 && pmouseY > 223 && pmouseY < 262){
+      DisplayKeyboard[6] = TopKeyboardYellow[6];
+      pickedIndex = 6;
+      }
+      if(pmouseX > 421 && pmouseX < 467 && pmouseY > 223 && pmouseY < 262){
+      DisplayKeyboard[7] = TopKeyboardYellow[7];
+      pickedIndex = 7;
+      }
+      if(pmouseX > 467 && pmouseX < 513 && pmouseY > 223 && pmouseY < 262){
+      DisplayKeyboard[8] = TopKeyboardYellow[8];
+      pickedIndex = 8;
+      }
+      if(pmouseX > 513 && pmouseX < 559 && pmouseY > 223 && pmouseY < 262){
+      DisplayKeyboard[9] = TopKeyboardYellow[9];
+      pickedIndex = 9;
+      }
+      if(pmouseX > 559 && pmouseX < 605 && pmouseY > 223 && pmouseY < 262){
+      DisplayKeyboard[10] = TopKeyboardYellow[10];
+      pickedIndex = 10;
+      }
+      if(pmouseX > 605 && pmouseX < 651 && pmouseY > 223 && pmouseY < 262){
+      DisplayKeyboard[11] = TopKeyboardYellow[11];
+      pickedIndex = 11;
+      }
+      if(pmouseX > 651 && pmouseX < 168 && pmouseY > 223 && pmouseY < 262){
+        DisplayKeyboard[12] = TopKeyboardYellow[12];
+        pickedIndex = 12;
+      }
+      // Second row of keys
+      if(pmouseX > 168 && pmouseX < 214 && pmouseY > 269 && pmouseY < 308){
+      DisplayKeyboard[13] = TopKeyboardYellow[13];
+      pickedIndex = 13;
+      }
+      if(pmouseX > 214 && pmouseX < 260 && pmouseY > 269 && pmouseY < 308){
+      DisplayKeyboard[14] = TopKeyboardYellow[14];
+      pickedIndex = 14;
+      }
+      if(pmouseX > 260 && pmouseX < 306 && pmouseY > 269 && pmouseY < 308){
+      DisplayKeyboard[15] = TopKeyboardYellow[15];
+      pickedIndex = 15;
+      }
+      if(pmouseX > 306 && pmouseX < 352 && pmouseY > 269 && pmouseY < 308){
+      DisplayKeyboard[16] = TopKeyboardYellow[16];
+      pickedIndex = 16;
+      }
+      if(pmouseX > 352 && pmouseX < 398 && pmouseY > 269 && pmouseY < 308){
+      DisplayKeyboard[17] = TopKeyboardYellow[17];
+      pickedIndex = 17;
+      }
+      if(pmouseX > 398 && pmouseX < 444 && pmouseY > 269 && pmouseY < 308){
+      DisplayKeyboard[18] = TopKeyboardYellow[18];
+      pickedIndex = 18;
+      }
+      if(pmouseX > 444 && pmouseX < 490 && pmouseY > 269 && pmouseY < 308){
+      DisplayKeyboard[19] = TopKeyboardYellow[19];
+      pickedIndex = 19;
+      }
+      if(pmouseX > 490 && pmouseX < 536 && pmouseY > 269 && pmouseY < 308){
+      DisplayKeyboard[20] = TopKeyboardYellow[20];
+      pickedIndex = 20;
+      }
+      if(pmouseX > 536 && pmouseX < 582 && pmouseY > 269 && pmouseY < 308){
+      DisplayKeyboard[21] = TopKeyboardYellow[21];
+      pickedIndex = 21;
+      }
+      if(pmouseX > 582 && pmouseX < 628 && pmouseY > 269 && pmouseY < 308){
+      DisplayKeyboard[22] = TopKeyboardYellow[22];
+      pickedIndex = 22;
+      }
+      if(pmouseX > 628 && pmouseX < 674 && pmouseY > 269 && pmouseY < 308){
+      DisplayKeyboard[23] = TopKeyboardYellow[23];
+      pickedIndex = 23;
+      }
+      if(pmouseX > 674 && pmouseX < 720 && pmouseY > 269 && pmouseY < 308){
+      DisplayKeyboard[24] = TopKeyboardYellow[24];
+      pickedIndex = 24;
+      }
+      if(pmouseX > 720 && pmouseX < 759 && pmouseY > 269 && pmouseY < 308){
+      DisplayKeyboard[25] = TopKeyboardYellow[25];
+      pickedIndex = 25;
+      }
+      // Third row of keys
+      if(pmouseX > 191 && pmouseX < 237 && pmouseY > 315 && pmouseY < 354){
+      DisplayKeyboard[26] = TopKeyboardYellow[26];
+      pickedIndex = 26;
+      }
+      if(pmouseX > 237 && pmouseX < 283 && pmouseY > 315 && pmouseY < 354){
+      DisplayKeyboard[27] = TopKeyboardYellow[27];
+      pickedIndex = 27;
+      }
+      if(pmouseX > 283 && pmouseX < 329 && pmouseY > 315 && pmouseY < 354){
+      DisplayKeyboard[28] = TopKeyboardYellow[28];
+      pickedIndex = 28;
+      }
+      if(pmouseX > 329 && pmouseX < 375 && pmouseY > 315 && pmouseY < 354){
+      DisplayKeyboard[29] = TopKeyboardYellow[29];
+      pickedIndex = 29;
+      }
+      if(pmouseX > 375 && pmouseX < 421 && pmouseY > 315 && pmouseY < 354){
+      DisplayKeyboard[30] = TopKeyboardYellow[30];
+      pickedIndex = 30;
+      }
+      if(pmouseX > 421 && pmouseX < 467 && pmouseY > 315 && pmouseY < 354){
+      DisplayKeyboard[31] = TopKeyboardYellow[31];
+      pickedIndex = 31;
+      }
+      if(pmouseX > 467 && pmouseX < 513 && pmouseY > 315 && pmouseY < 354){
+      DisplayKeyboard[32] = TopKeyboardYellow[32];
+      pickedIndex = 32;
+      }
+      if(pmouseX > 513 && pmouseX < 559 && pmouseY > 315 && pmouseY < 354){
+      DisplayKeyboard[33] = TopKeyboardYellow[33];
+      pickedIndex = 33;
+      }
+      if(pmouseX > 559 && pmouseX < 605 && pmouseY > 315 && pmouseY < 354){
+      DisplayKeyboard[34] = TopKeyboardYellow[34];
+      pickedIndex = 34;
+      }
+      if(pmouseX > 605 && pmouseX < 651 && pmouseY > 315 && pmouseY < 354){
+      DisplayKeyboard[35] = TopKeyboardYellow[35];
+      pickedIndex = 35;
+      }
+      if(pmouseX > 651 && pmouseX < 697 && pmouseY > 315 && pmouseY < 354){
+      DisplayKeyboard[36] = TopKeyboardYellow[36];
+      pickedIndex = 36;
+      }
+      if(pmouseX > 697 && pmouseX < 736 && pmouseY > 315 && pmouseY < 354){
+      DisplayKeyboard[37] = TopKeyboardYellow[37];
+      pickedIndex = 37;
+      }
+      
+      // Fourth row of keys
+      if(pmouseX > 214 && pmouseX < 260 && pmouseY > 361 && pmouseY < 400){
+       DisplayKeyboard[38] = TopKeyboardYellow[38];
+       pickedIndex = 38;
+      }
+      if(pmouseX > 260 && pmouseX < 306 && pmouseY > 361 && pmouseY < 400){
+      DisplayKeyboard[39] = TopKeyboardYellow[39];
+      pickedIndex = 39;
+      }
+      if(pmouseX > 306 && pmouseX < 352 && pmouseY > 361 && pmouseY < 400){
+      DisplayKeyboard[40] = TopKeyboardYellow[40];
+      pickedIndex = 40;
+      }
+      if(pmouseX > 352 && pmouseX < 398 && pmouseY > 361 && pmouseY < 400){
+       DisplayKeyboard[41] = TopKeyboardYellow[41];
+      pickedIndex = 41;
+      }
+      if(pmouseX > 398 && pmouseX < 444 && pmouseY > 361 && pmouseY < 400){
+       DisplayKeyboard[42] = TopKeyboardYellow[42];
+      pickedIndex = 42;
+      }
+      if(pmouseX > 444 && pmouseX < 490 && pmouseY > 361 && pmouseY < 400){
+       DisplayKeyboard[43] = TopKeyboardYellow[43];
+      pickedIndex = 43;
+      }
+      if(pmouseX > 490 && pmouseX < 536 && pmouseY > 361 && pmouseY < 400){
+       DisplayKeyboard[44] = TopKeyboardYellow[44];
+      pickedIndex = 44;
+      }
+      if(pmouseX > 536 && pmouseX < 582 && pmouseY > 361 && pmouseY < 400){
+       DisplayKeyboard[45] = TopKeyboardYellow[45];
+      pickedIndex = 45;
+      }
+      if(pmouseX > 582 && pmouseX < 628 && pmouseY > 361 && pmouseY < 400){
+      DisplayKeyboard[46] = TopKeyboardYellow[46];
+      pickedIndex = 46;
+      }
+      if(pmouseX > 628 && pmouseX < 667 && pmouseY > 361 && pmouseY < 400){
+      DisplayKeyboard[47] = TopKeyboardYellow[47];
+      pickedIndex = 47;
+      }
+      // Special Keys
+      if(pmouseX > 129 && pmouseX < 207 && pmouseY > 407 && pmouseY < 446){
+        DisplayKeyboard[48] = TopKeyboardYellow[48];
+        pickedIndex = 48;
+      }
+      if(pmouseX > 147 && pmouseX < 191 && pmouseY > 467 && pmouseY < 506){
+        DisplayKeyboard[49] = TopKeyboardYellow[49];
+        pickedIndex = 49;
+      }
+      if(pmouseX > 202 && pmouseX < 246 && pmouseY > 467 && pmouseY < 506){
+        DisplayKeyboard[50] = TopKeyboardYellow[50];
+        pickedIndex = 50;
+      }
+      if(pmouseX > 256 && pmouseX < 312 && pmouseY > 467 && pmouseY < 506){
+        DisplayKeyboard[51] = TopKeyboardYellow[51];
+        pickedIndex = 51;
+      }
+      if(pmouseX > 322 && pmouseX < 478 && pmouseY > 467 && pmouseY < 506){
+        DisplayKeyboard[52] = TopKeyboardYellow[52];
+        pickedIndex = 52;
+      }
+      if(pmouseX > 555 && pmouseX < 611 && pmouseY > 467 && pmouseY < 506){
+        DisplayKeyboard[53] = TopKeyboardYellow[53];
+        pickedIndex = 53;
+      }
+      if(pmouseX > 621 && pmouseX < 665 && pmouseY > 467 && pmouseY < 506){
+        DisplayKeyboard[54] = TopKeyboardYellow[54];
+        pickedIndex = 54;
+      }
   }
-  if(pmouseX > 884 && pmouseX < 1007 && pmouseY > 16 && pmouseY < 53){
-    if(!alphanumericTab){
-      alphanumericTab = true;
-      symbolsTab = false;
-      modifiersTab = false;
-    }
-  }
-  if(pmouseX > 1019 && pmouseX < 1142 && pmouseY > 16 && pmouseY < 53){
-    if(!symbolsTab){
-      alphanumericTab = false;
-      symbolsTab = true;
-      modifiersTab = false;
-    }
-  }
-  if(pmouseX > 1153 && pmouseX < 1276 && pmouseY > 16 && pmouseY < 53){
-    if(!modifiersTab){
-      alphanumericTab = false;
-      symbolsTab = false;
-      modifiersTab = true;
-    }
-    
-  }
-  if(alphanumericTab){
-    if(pmouseX > 873 && pmouseX < 912 && pmouseY > 89 && pmouseY < 128){
-      DisplayKeyboard[pickedIndex] = One_black;
-    }
-    if(pmouseX > 919 && pmouseX < 958 && pmouseY > 89 && pmouseY < 128){
-      DisplayKeyboard[pickedIndex] = Two_black;
-    }
-    if(pmouseX > 965 && pmouseX < 1004 && pmouseY > 89 && pmouseY < 128){
-      DisplayKeyboard[pickedIndex] = Three_black;
-    }
-    if(pmouseX > 1011 && pmouseX < 1050 && pmouseY > 89 && pmouseY < 128){
-      DisplayKeyboard[pickedIndex] = Four_black;
-    }
-    if(pmouseX > 1057 && pmouseX < 1096 && pmouseY > 89 && pmouseY < 128){
-      DisplayKeyboard[pickedIndex] = Five_black;
-    }
-    if(pmouseX > 1103 && pmouseX < 1142 && pmouseY > 89 && pmouseY < 128){
-      DisplayKeyboard[pickedIndex] = Six_black;
-    }
-    if(pmouseX > 1149 && pmouseX < 1188 && pmouseY > 89 && pmouseY < 128){
-      DisplayKeyboard[pickedIndex] = Seven_black;
-    }
-    if(pmouseX > 1195 && pmouseX < 1234 && pmouseY > 89 && pmouseY < 128){
-      DisplayKeyboard[pickedIndex] = Eight_black;
-    }
-    if(pmouseX > 1241 && pmouseX < 1280 && pmouseY > 89 && pmouseY < 128){
-      DisplayKeyboard[pickedIndex] = Nine_black;
-    }
-    // Second Row
-    if(pmouseX > 873 && pmouseX < 912 && pmouseY > 136 && pmouseY < 175){
-      DisplayKeyboard[pickedIndex] = Zero_black;
-    }
-    if(pmouseX > 919 && pmouseX < 958 && pmouseY > 136 && pmouseY < 175){
-      DisplayKeyboard[pickedIndex] = A_black;
-    }
-    if(pmouseX > 965 && pmouseX < 1004 && pmouseY > 136 && pmouseY < 175){
-      DisplayKeyboard[pickedIndex] = B_black;
-    }
-    if(pmouseX > 1011 && pmouseX < 1050 && pmouseY > 136 && pmouseY < 175){
-      DisplayKeyboard[pickedIndex] = C_black;
-    }
-    if(pmouseX > 1057 && pmouseX < 1096 && pmouseY > 136 && pmouseY < 175){
-      DisplayKeyboard[pickedIndex] = D_black;
-    }
-    if(pmouseX > 1103 && pmouseX < 1142 && pmouseY > 136 && pmouseY < 175){
-      DisplayKeyboard[pickedIndex] = E_black;
-    }
-    if(pmouseX > 1149 && pmouseX < 1188 && pmouseY > 136 && pmouseY < 175){
-      DisplayKeyboard[pickedIndex] = F_black;
-    }
-    if(pmouseX > 1195 && pmouseX < 1234 && pmouseY > 136 && pmouseY < 175){
-      DisplayKeyboard[pickedIndex] = G_black;
-    }
-    if(pmouseX > 1241 && pmouseX < 1280 && pmouseY > 136 && pmouseY < 175){
-      DisplayKeyboard[pickedIndex] = H_black;
-    }
-    // Third Row
-    if(pmouseX > 873 && pmouseX < 912 && pmouseY > 183 && pmouseY < 222){
-      DisplayKeyboard[pickedIndex] = I_black;
-    }
-    if(pmouseX > 919 && pmouseX < 958 && pmouseY > 183 && pmouseY < 222){
-      DisplayKeyboard[pickedIndex] = J_black;
-    }
-    if(pmouseX > 965 && pmouseX < 1004 && pmouseY > 183 && pmouseY < 222){
-      DisplayKeyboard[pickedIndex] = K_black;
-    }
-    if(pmouseX > 1011 && pmouseX < 1050 && pmouseY > 183 && pmouseY < 222){
-      DisplayKeyboard[pickedIndex] = L_black;
-    }
-    if(pmouseX > 1057 && pmouseX < 1096 && pmouseY > 183 && pmouseY < 222){
-      DisplayKeyboard[pickedIndex] = M_black;
-    }
-    if(pmouseX > 1103 && pmouseX < 1142 && pmouseY > 183 && pmouseY < 222){
-      DisplayKeyboard[pickedIndex] = N_black;
-    }
-    if(pmouseX > 1149 && pmouseX < 1188 && pmouseY > 183 && pmouseY < 222){
-      DisplayKeyboard[pickedIndex] = O_black;
-    }
-    if(pmouseX > 1195 && pmouseX < 1234 && pmouseY > 183 && pmouseY < 222){
-      DisplayKeyboard[pickedIndex] = P_black;
-    }
-    if(pmouseX > 1241 && pmouseX < 1280 && pmouseY > 183 && pmouseY < 222){
-      DisplayKeyboard[pickedIndex] = Q_black;
-    }
-    // Fourth Row
-    if(pmouseX > 873 && pmouseX < 912 && pmouseY > 230 && pmouseY < 230){
-      DisplayKeyboard[pickedIndex] = R_black;
-    }
-    if(pmouseX > 919 && pmouseX < 958 && pmouseY > 230 && pmouseY < 269){
-      DisplayKeyboard[pickedIndex] = S_black;
-    }
-    if(pmouseX > 965 && pmouseX < 1004 && pmouseY > 230 && pmouseY < 269){
-      DisplayKeyboard[pickedIndex] = T_black;
-    }
-    if(pmouseX > 1011 && pmouseX < 1050 && pmouseY > 230 && pmouseY < 269){
-      DisplayKeyboard[pickedIndex] = U_black;
-    }
-    if(pmouseX > 1057 && pmouseX < 1096 && pmouseY > 230 && pmouseY < 269){
-      DisplayKeyboard[pickedIndex] = V_black;
-    }
-    if(pmouseX > 1103 && pmouseX < 1142 && pmouseY > 230 && pmouseY < 269){
-      DisplayKeyboard[pickedIndex] = W_black;
-    }
-    if(pmouseX > 1149 && pmouseX < 1188 && pmouseY > 230 && pmouseY < 269){
-      DisplayKeyboard[pickedIndex] = X_black;
-    }
-    if(pmouseX > 1195 && pmouseX < 1234 && pmouseY > 230 && pmouseY < 269){
-      DisplayKeyboard[pickedIndex] = Y_black;
-    }
-    if(pmouseX > 1241 && pmouseX < 1280 && pmouseY > 230 && pmouseY < 269){
-      DisplayKeyboard[pickedIndex] = Z_black;
-    }
-  }
-  if(symbolsTab){
-    if(pmouseX > 873 && pmouseX < 912 && pmouseY > 89 && pmouseY < 128){
-      DisplayKeyboard[pickedIndex] = tilde_black;
-    }
-    if(pmouseX > 1057 && pmouseX < 1096 && pmouseY > 89 && pmouseY < 128){
-      DisplayKeyboard[pickedIndex] = Dash_black;
-    }
-    if(pmouseX > 1103 && pmouseX < 1142 && pmouseY > 89 && pmouseY < 128){
-      DisplayKeyboard[pickedIndex] = Equal_black;
-    }
-    if(pmouseX > 873 && pmouseX < 912 && pmouseY > 136 && pmouseY < 175){
-      DisplayKeyboard[pickedIndex] = LeftBracket_black;
-    }
-    if(pmouseX > 919 && pmouseX < 958 && pmouseY > 136 && pmouseY < 175){
-      DisplayKeyboard[pickedIndex] = RightBracket_black;
-    }
-    if(pmouseX > 1195 && pmouseX < 1234 && pmouseY > 89 && pmouseY < 128){
-      DisplayKeyboard[pickedIndex] = Backslash_black;
-    }
-    if(pmouseX > 1011 && pmouseX < 1050 && pmouseY > 89 && pmouseY < 128){
-      DisplayKeyboard[pickedIndex] = Semicolon_black;
-    }
-    if(pmouseX > 1241 && pmouseX < 1280 && pmouseY > 89 && pmouseY < 128){
-      DisplayKeyboard[pickedIndex] = Quotes_black;
-    }
-    if(pmouseX > 919 && pmouseX < 958 && pmouseY > 89 && pmouseY < 128){
-      DisplayKeyboard[pickedIndex] = Comma_black;
-    }
-    if(pmouseX > 965 && pmouseX < 1004 && pmouseY > 89 && pmouseY < 128){
-      DisplayKeyboard[pickedIndex] = Period_black;
-    }
-    if(pmouseX > 1149 && pmouseX < 1188 && pmouseY > 89 && pmouseY < 128){
-      DisplayKeyboard[pickedIndex] = Forwardslash_black;
-    }
-  }
-  if(modifiersTab){
-    if(pmouseX > 873 && pmouseX < 912 && pmouseY > 183 && pmouseY < 222){
-      DisplayKeyboard[pickedIndex] = Return_black;
-    }
-    if(pmouseX > 873 && pmouseX < 951 && pmouseY > 89 && pmouseY < 128){
-      DisplayKeyboard[pickedIndex] = Shift_black;
-    }
-    if(pmouseX > 873 && pmouseX < 912 && pmouseY > 136 && pmouseY < 175){
-      DisplayKeyboard[pickedIndex] = Control_black;
-    }
-    if(pmouseX > 928 && pmouseX < 967 && pmouseY > 136 && pmouseY < 175){
-      DisplayKeyboard[pickedIndex] = Option_black;
-    }
-    if(pmouseX > 982 && pmouseX < 1038 && pmouseY > 136 && pmouseY < 175){
-      DisplayKeyboard[pickedIndex] = Command_black;
-    }
-    if(pmouseX > 873 && pmouseX < 1029 && pmouseY > 230 && pmouseY < 269){
-      DisplayKeyboard[pickedIndex] = Space_black;
-    }
-  }
-  // Key Selection
-  // First Row
-  if(pmouseX > 99 && pmouseX < 145 && pmouseY > 223 && pmouseY < 262){
-    DisplayKeyboard[0] = TopKeyboardYellow[0];
-    pickedIndex = 0;
-    println("0");
-  }
-  if(pmouseX > 145 && pmouseX < 191 && pmouseY > 223 && pmouseY < 262){
-    DisplayKeyboard[1] = TopKeyboardYellow[1];
-    pickedIndex = 1;
-    }
-    if(pmouseX > 191 && pmouseX < 237 && pmouseY > 223 && pmouseY < 262){
-    DisplayKeyboard[2] = TopKeyboardYellow[2];
-    pickedIndex = 2;
-    }
-    if(pmouseX > 237 && pmouseX < 283 && pmouseY > 223 && pmouseY < 262){
-    DisplayKeyboard[3] = TopKeyboardYellow[3];
-    pickedIndex = 3;
-    }
-    if(pmouseX > 283 && pmouseX < 329 && pmouseY > 223 && pmouseY < 262){
-    DisplayKeyboard[4] = TopKeyboardYellow[4];
-    pickedIndex = 4;
-    }
-    if(pmouseX > 329 && pmouseX < 375 && pmouseY > 223 && pmouseY < 262){
-    DisplayKeyboard[5] = TopKeyboardYellow[5];
-    pickedIndex = 5;
-    }
-    if(pmouseX > 375 && pmouseX < 421 && pmouseY > 223 && pmouseY < 262){
-    DisplayKeyboard[6] = TopKeyboardYellow[6];
-    pickedIndex = 6;
-    }
-    if(pmouseX > 421 && pmouseX < 467 && pmouseY > 223 && pmouseY < 262){
-    DisplayKeyboard[7] = TopKeyboardYellow[7];
-    pickedIndex = 7;
-    }
-    if(pmouseX > 467 && pmouseX < 513 && pmouseY > 223 && pmouseY < 262){
-    DisplayKeyboard[8] = TopKeyboardYellow[8];
-    pickedIndex = 8;
-    }
-    if(pmouseX > 513 && pmouseX < 559 && pmouseY > 223 && pmouseY < 262){
-    DisplayKeyboard[9] = TopKeyboardYellow[9];
-    pickedIndex = 9;
-    }
-    if(pmouseX > 559 && pmouseX < 605 && pmouseY > 223 && pmouseY < 262){
-    DisplayKeyboard[10] = TopKeyboardYellow[10];
-    pickedIndex = 10;
-    }
-    if(pmouseX > 605 && pmouseX < 651 && pmouseY > 223 && pmouseY < 262){
-    DisplayKeyboard[11] = TopKeyboardYellow[11];
-    pickedIndex = 11;
-    }
-    if(pmouseX > 651 && pmouseX < 168 && pmouseY > 223 && pmouseY < 262){
-      DisplayKeyboard[12] = TopKeyboardYellow[12];
-      pickedIndex = 12;
-    }
-    // Second row of keys
-    if(pmouseX > 168 && pmouseX < 214 && pmouseY > 269 && pmouseY < 308){
-    DisplayKeyboard[13] = TopKeyboardYellow[13];
-    pickedIndex = 13;
-    }
-    if(pmouseX > 214 && pmouseX < 260 && pmouseY > 269 && pmouseY < 308){
-    DisplayKeyboard[14] = TopKeyboardYellow[14];
-    pickedIndex = 14;
-    }
-    if(pmouseX > 260 && pmouseX < 306 && pmouseY > 269 && pmouseY < 308){
-    DisplayKeyboard[15] = TopKeyboardYellow[15];
-    pickedIndex = 15;
-    }
-    if(pmouseX > 306 && pmouseX < 352 && pmouseY > 269 && pmouseY < 308){
-    DisplayKeyboard[16] = TopKeyboardYellow[16];
-    pickedIndex = 16;
-    }
-    if(pmouseX > 352 && pmouseX < 398 && pmouseY > 269 && pmouseY < 308){
-    DisplayKeyboard[17] = TopKeyboardYellow[17];
-    pickedIndex = 17;
-    }
-    if(pmouseX > 398 && pmouseX < 444 && pmouseY > 269 && pmouseY < 308){
-    DisplayKeyboard[18] = TopKeyboardYellow[18];
-    pickedIndex = 18;
-    }
-    if(pmouseX > 444 && pmouseX < 490 && pmouseY > 269 && pmouseY < 308){
-    DisplayKeyboard[19] = TopKeyboardYellow[19];
-    pickedIndex = 19;
-    }
-    if(pmouseX > 490 && pmouseX < 536 && pmouseY > 269 && pmouseY < 308){
-    DisplayKeyboard[20] = TopKeyboardYellow[20];
-    pickedIndex = 20;
-    }
-    if(pmouseX > 536 && pmouseX < 582 && pmouseY > 269 && pmouseY < 308){
-    DisplayKeyboard[21] = TopKeyboardYellow[21];
-    pickedIndex = 21;
-    }
-    if(pmouseX > 582 && pmouseX < 628 && pmouseY > 269 && pmouseY < 308){
-    DisplayKeyboard[22] = TopKeyboardYellow[22];
-    pickedIndex = 22;
-    }
-    if(pmouseX > 628 && pmouseX < 674 && pmouseY > 269 && pmouseY < 308){
-    DisplayKeyboard[23] = TopKeyboardYellow[23];
-    pickedIndex = 23;
-    }
-    if(pmouseX > 674 && pmouseX < 720 && pmouseY > 269 && pmouseY < 308){
-    DisplayKeyboard[24] = TopKeyboardYellow[24];
-    pickedIndex = 24;
-    }
-    if(pmouseX > 720 && pmouseX < 759 && pmouseY > 269 && pmouseY < 308){
-    DisplayKeyboard[25] = TopKeyboardYellow[25];
-    pickedIndex = 25;
-    }
-    // Third row of keys
-    if(pmouseX > 191 && pmouseX < 237 && pmouseY > 315 && pmouseY < 354){
-    DisplayKeyboard[26] = TopKeyboardYellow[26];
-    pickedIndex = 26;
-    }
-    if(pmouseX > 237 && pmouseX < 283 && pmouseY > 315 && pmouseY < 354){
-    DisplayKeyboard[27] = TopKeyboardYellow[27];
-    pickedIndex = 27;
-    }
-    if(pmouseX > 283 && pmouseX < 329 && pmouseY > 315 && pmouseY < 354){
-    DisplayKeyboard[28] = TopKeyboardYellow[28];
-    pickedIndex = 28;
-    }
-    if(pmouseX > 329 && pmouseX < 375 && pmouseY > 315 && pmouseY < 354){
-    DisplayKeyboard[29] = TopKeyboardYellow[29];
-    pickedIndex = 29;
-    }
-    if(pmouseX > 375 && pmouseX < 421 && pmouseY > 315 && pmouseY < 354){
-    DisplayKeyboard[30] = TopKeyboardYellow[30];
-    pickedIndex = 30;
-    }
-    if(pmouseX > 421 && pmouseX < 467 && pmouseY > 315 && pmouseY < 354){
-    DisplayKeyboard[31] = TopKeyboardYellow[31];
-    pickedIndex = 31;
-    }
-    if(pmouseX > 467 && pmouseX < 513 && pmouseY > 315 && pmouseY < 354){
-    DisplayKeyboard[32] = TopKeyboardYellow[32];
-    pickedIndex = 32;
-    }
-    if(pmouseX > 513 && pmouseX < 559 && pmouseY > 315 && pmouseY < 354){
-    DisplayKeyboard[33] = TopKeyboardYellow[33];
-    pickedIndex = 33;
-    }
-    if(pmouseX > 559 && pmouseX < 605 && pmouseY > 315 && pmouseY < 354){
-    DisplayKeyboard[34] = TopKeyboardYellow[34];
-    pickedIndex = 34;
-    }
-    if(pmouseX > 605 && pmouseX < 651 && pmouseY > 315 && pmouseY < 354){
-    DisplayKeyboard[35] = TopKeyboardYellow[35];
-    pickedIndex = 35;
-    }
-    if(pmouseX > 651 && pmouseX < 697 && pmouseY > 315 && pmouseY < 354){
-    DisplayKeyboard[36] = TopKeyboardYellow[36];
-    pickedIndex = 36;
-    }
-    if(pmouseX > 697 && pmouseX < 736 && pmouseY > 315 && pmouseY < 354){
-    DisplayKeyboard[37] = TopKeyboardYellow[37];
-    pickedIndex = 37;
-    }
-    
-    // Fourth row of keys
-    if(pmouseX > 214 && pmouseX < 260 && pmouseY > 361 && pmouseY < 400){
-     DisplayKeyboard[38] = TopKeyboardYellow[38];
-     pickedIndex = 38;
-    }
-    if(pmouseX > 260 && pmouseX < 306 && pmouseY > 361 && pmouseY < 400){
-    DisplayKeyboard[39] = TopKeyboardYellow[39];
-    pickedIndex = 39;
-    }
-    if(pmouseX > 306 && pmouseX < 352 && pmouseY > 361 && pmouseY < 400){
-    DisplayKeyboard[40] = TopKeyboardYellow[40];
-    pickedIndex = 40;
-    }
-    if(pmouseX > 352 && pmouseX < 398 && pmouseY > 361 && pmouseY < 400){
-     DisplayKeyboard[41] = TopKeyboardYellow[41];
-    pickedIndex = 41;
-    }
-    if(pmouseX > 398 && pmouseX < 444 && pmouseY > 361 && pmouseY < 400){
-     DisplayKeyboard[42] = TopKeyboardYellow[42];
-    pickedIndex = 42;
-    }
-    if(pmouseX > 444 && pmouseX < 490 && pmouseY > 361 && pmouseY < 400){
-     DisplayKeyboard[43] = TopKeyboardYellow[43];
-    pickedIndex = 43;
-    }
-    if(pmouseX > 490 && pmouseX < 536 && pmouseY > 361 && pmouseY < 400){
-     DisplayKeyboard[44] = TopKeyboardYellow[44];
-    pickedIndex = 44;
-    }
-    if(pmouseX > 536 && pmouseX < 582 && pmouseY > 361 && pmouseY < 400){
-     DisplayKeyboard[45] = TopKeyboardYellow[45];
-    pickedIndex = 45;
-    }
-    if(pmouseX > 582 && pmouseX < 628 && pmouseY > 361 && pmouseY < 400){
-    DisplayKeyboard[46] = TopKeyboardYellow[46];
-    pickedIndex = 46;
-    }
-    if(pmouseX > 628 && pmouseX < 667 && pmouseY > 361 && pmouseY < 400){
-    DisplayKeyboard[47] = TopKeyboardYellow[47];
-    pickedIndex = 47;
-    }
-    // Special Keys
-    if(pmouseX > 129 && pmouseX < 207 && pmouseY > 407 && pmouseY < 446){
-      DisplayKeyboard[48] = TopKeyboardYellow[48];
-      pickedIndex = 48;
-    }
-    if(pmouseX > 147 && pmouseX < 191 && pmouseY > 467 && pmouseY < 506){
-      DisplayKeyboard[49] = TopKeyboardYellow[49];
-      pickedIndex = 49;
-    }
-    if(pmouseX > 202 && pmouseX < 246 && pmouseY > 467 && pmouseY < 506){
-      DisplayKeyboard[50] = TopKeyboardYellow[50];
-      pickedIndex = 50;
-    }
-    if(pmouseX > 256 && pmouseX < 312 && pmouseY > 467 && pmouseY < 506){
-      DisplayKeyboard[51] = TopKeyboardYellow[51];
-      pickedIndex = 51;
-    }
-    if(pmouseX > 322 && pmouseX < 478 && pmouseY > 467 && pmouseY < 506){
-      DisplayKeyboard[52] = TopKeyboardYellow[52];
-      pickedIndex = 52;
-    }
-    if(pmouseX > 555 && pmouseX < 611 && pmouseY > 467 && pmouseY < 506){
-      DisplayKeyboard[53] = TopKeyboardYellow[53];
-      pickedIndex = 53;
-    }
-    if(pmouseX > 621 && pmouseX < 665 && pmouseY > 467 && pmouseY < 506){
-      DisplayKeyboard[54] = TopKeyboardYellow[54];
-      pickedIndex = 54;
-    }
-  
     if(testerMode){
       if(pmouseX > 650 && pmouseX < 728 && pmouseY > 145 && pmouseY < 181){
       clear();
       }
     }
-}
-void drawTester(){
-  image(Clear_Key, 650 , 145, 78, 36);
-  input.show();
-}
-void clear() {
-  cp5.get(Textfield.class,"Input").clear();
-}
-void drawPopup(){
-  if(infoPopup){
-  pushMatrix();
-  fill(greyBlue50);
-  rect(100, 226, 670, 278);
-  textAlign(CENTER);
-  fill(white);
-  textSize(20);
-  text("How to use:\nClick on any key in the top palette that you would like to change.\nThen, select your replacement key in the bottom palette. The new key\nwill be automatically saved and ready for use!",
-       430, 310);
-  image(Confirm_Key, 675, 448, 78, 36);
-  popMatrix();
-  }
-}
-void showAlphanumeric(){
-  //Add Keys
-  image(One_black, 873, 89, 39,39);
-  image(Two_black, 919, 89, 39,39);
-  image(Three_black, 965, 89, 39,39);
-  image(Four_black, 1011, 89, 39,39);
-  image(Five_black, 1057, 89, 39,39);
-  image(Six_black, 1103, 89, 39,39);
-  image(Seven_black, 1149, 89, 39,39);
-  image(Eight_black, 1195, 89, 39,39);
-  image(Nine_black, 1241, 89, 39,39);
-  
-  image(Zero_black, 873, 136, 39,39);
-  image(A_black, 919, 136, 39, 39);
-  image(B_black, 965, 136, 39, 39);
-  image(C_black, 1011, 136, 39, 39);
-  image(D_black, 1057, 136, 39, 39);
-  image(E_black, 1103, 136, 39, 39);
-  image(F_black, 1149, 136, 39, 39);
-  image(G_black, 1195, 136, 39, 39);
-  image(H_black, 1241, 136, 39, 39);
-  
-  image(I_black, 873, 183, 39, 39);
-  image(J_black, 919, 183, 39, 39);
-  image(K_black, 965, 183, 39, 39);
-  image(L_black, 1011, 183, 39, 39);
-  image(M_black, 1057, 183, 39, 39);
-  image(N_black, 1103, 183, 39, 39);
-  image(O_black, 1149, 183, 39, 39);
-  image(P_black, 1195, 183, 39, 39);
-  image(Q_black, 1241, 183, 39, 39);
-  
-  image(R_black, 873, 230, 39, 39);
-  image(S_black, 919, 230, 39, 39);
-  image(T_black, 965, 230, 39, 39);
-  image(U_black, 1011, 230, 39, 39);
-  image(V_black, 1057, 230, 39, 39);
-  image(W_black, 1103, 230, 39, 39);
-  image(X_black, 1149, 230, 39, 39);
-  image(Y_black, 1195, 230, 39, 39);
-  image(Z_black, 1241, 230, 39, 39);
-}
-void showSymbols(){
-  //Add Keys
-  image(tilde_black, 873, 89, 39,39);
-  image(Dash_black, 1057, 89, 39,39);
-  image(Equal_black, 1103, 89, 39,39);
-  image(LeftBracket_black, 873, 136, 39, 39);
-  image(RightBracket_black, 919, 136, 39, 39);
-  image(Backslash_black, 1195, 89, 39, 39);
-  image(Semicolon_black, 1011, 89, 39, 39);
-  image(Quotes_black, 1241, 89, 39, 39);
-  image(Comma_black, 919, 89, 39, 39);
-  image(Period_black, 965, 89, 39, 39);
-  image(Forwardslash_black, 1149, 89, 39, 39);
-}
-void showModifiers(){
-  //Add Keys
-  image(Return_black, 873, 183, 66, 39);
-  image(Shift_black, 873, 89, 78, 39);
-  image(Control_black, 873, 136, 44, 39);
-  image(Option_black, 928, 136, 44, 39);
-  image(Command_black, 982, 136, 56, 39);
-  image(Space_black, 873, 230, 156, 39);
-}
-void mousePressed(){
-  if (!modeDropdown.isMouseOver()) {    
-    modeDropdown.close();
-  }
-  if(pmouseX > 801 && pmouseX < 836 && pmouseY > 16 && pmouseY < 51){
-    if(!infoPopup){
-      infoPopup = true;
-    }
-  }
-  if(infoPopup){
-    if(pmouseX > 675 && pmouseX < 753 && pmouseY > 448 && pmouseY < 484){
-      infoPopup = false;
-    }
-  }
-  if(pmouseX > 884 && pmouseX < 1007 && pmouseY > 16 && pmouseY < 53){
-    if(!alphanumericTab){
-      alphanumericTab = true;
-      symbolsTab = false;
-      modifiersTab = false;
-    }
-  }
-  if(pmouseX > 1019 && pmouseX < 1142 && pmouseY > 16 && pmouseY < 53){
-    if(!symbolsTab){
-      alphanumericTab = false;
-      symbolsTab = true;
-      modifiersTab = false;
-    }
-  }
-  if(pmouseX > 1153 && pmouseX < 1276 && pmouseY > 16 && pmouseY < 53){
-    if(!modifiersTab){
-      alphanumericTab = false;
-      symbolsTab = false;
-      modifiersTab = true;
-    }
-  }
-  if(testerMode){
-      if(pmouseX > 650 && pmouseX < 728 && pmouseY > 145 && pmouseY < 181){
-      clear();
-      }
-  }
 }
