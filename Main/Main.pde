@@ -169,6 +169,8 @@ PImage Symbols_Selected;
 PImage Modifiers_Selected;
 PImage Clear_Key;
 
+int msecMap;
+int msecTest;
 void setup() {
   size(1300, 780);
   pixelDensity(displayDensity());
@@ -301,7 +303,6 @@ void setup() {
   Space_yellow = loadImage("Space_Key_Yellow.png");
   Return_yellow = loadImage("Return_Key_Yellow.png");
   
-  
   //Misc
   Info_icon = loadImage("info_icon.png");
   Confirm_Key = loadImage("Confirm_Key.png");
@@ -312,7 +313,7 @@ void setup() {
   Symbols_Selected = loadImage("Symbols_Tab_Selected.png");
   Modifiers_Selected = loadImage("Modifiers_Tab_Selected.png");
   Clear_Key = loadImage("Clear_Key.png");
-  
+
   // Loading Image Arrays
   TopKeyboardBlack[0] = tilde_black;
   TopKeyboardBlack[1] = One_black;
@@ -477,7 +478,6 @@ void setup() {
   DisplayKeyboard[52] = Space_black;
   DisplayKeyboard[53] = Command_black;
   DisplayKeyboard[54] = Option_black;
-  
 }
 
 void customize(DropdownList dropDown){
@@ -513,6 +513,7 @@ void draw() {
     //Keymap mode window
     drawUnselectedTop();
     input.hide();
+    msecMap = millis();
   }
   else if (testerMode){
     //Key tester mode window
@@ -520,6 +521,11 @@ void draw() {
     drawTester();
   }
   drawPopup();
+    msecTest = millis();
+  }
+  drawPopup();
+  println("Time in ms for Mapping:" + msecMap);
+  println("Time in ms for Testing:" + msecTest);
 }
 void checkMode(){
   int active = int(modeDropdown.getValue());
@@ -1143,4 +1149,131 @@ void mousePressed(){
       clear();
       }
     }
+}
+void drawTester(){
+  image(Clear_Key, 650 , 145, 78, 36);
+  input.show();
+}
+void clear() {
+  cp5.get(Textfield.class,"Input").clear();
+}
+void drawPopup(){
+  if(infoPopup){
+  pushMatrix();
+  fill(greyBlue50);
+  rect(100, 226, 670, 278);
+  textAlign(CENTER);
+  fill(white);
+  textSize(20);
+  text("How to use:\nClick on any key in the top palette that you would like to change.\nThen, select your replacement key in the bottom palette. The new key\nwill be automatically saved and ready for use!",
+       430, 310);
+  image(Confirm_Key, 675, 448, 78, 36);
+  popMatrix();
+  }
+}
+void showAlphanumeric(){
+  //Add Keys
+  image(One_black, 873, 89, 39,39);
+  image(Two_black, 919, 89, 39,39);
+  image(Three_black, 965, 89, 39,39);
+  image(Four_black, 1011, 89, 39,39);
+  image(Five_black, 1057, 89, 39,39);
+  image(Six_black, 1103, 89, 39,39);
+  image(Seven_black, 1149, 89, 39,39);
+  image(Eight_black, 1195, 89, 39,39);
+  image(Nine_black, 1241, 89, 39,39);
+  
+  image(Zero_black, 873, 136, 39,39);
+  image(A_black, 919, 136, 39, 39);
+  image(B_black, 965, 136, 39, 39);
+  image(C_black, 1011, 136, 39, 39);
+  image(D_black, 1057, 136, 39, 39);
+  image(E_black, 1103, 136, 39, 39);
+  image(F_black, 1149, 136, 39, 39);
+  image(G_black, 1195, 136, 39, 39);
+  image(H_black, 1241, 136, 39, 39);
+  
+  image(I_black, 873, 183, 39, 39);
+  image(J_black, 919, 183, 39, 39);
+  image(K_black, 965, 183, 39, 39);
+  image(L_black, 1011, 183, 39, 39);
+  image(M_black, 1057, 183, 39, 39);
+  image(N_black, 1103, 183, 39, 39);
+  image(O_black, 1149, 183, 39, 39);
+  image(P_black, 1195, 183, 39, 39);
+  image(Q_black, 1241, 183, 39, 39);
+  
+  image(R_black, 873, 230, 39, 39);
+  image(S_black, 919, 230, 39, 39);
+  image(T_black, 965, 230, 39, 39);
+  image(U_black, 1011, 230, 39, 39);
+  image(V_black, 1057, 230, 39, 39);
+  image(W_black, 1103, 230, 39, 39);
+  image(X_black, 1149, 230, 39, 39);
+  image(Y_black, 1195, 230, 39, 39);
+  image(Z_black, 1241, 230, 39, 39);
+}
+void showSymbols(){
+  //Add Keys
+  image(tilde_black, 873, 89, 39,39);
+  image(Dash_black, 1057, 89, 39,39);
+  image(Equal_black, 1103, 89, 39,39);
+  image(LeftBracket_black, 873, 136, 39, 39);
+  image(RightBracket_black, 919, 136, 39, 39);
+  image(Backslash_black, 1195, 89, 39, 39);
+  image(Semicolon_black, 1011, 89, 39, 39);
+  image(Quotes_black, 1241, 89, 39, 39);
+  image(Comma_black, 919, 89, 39, 39);
+  image(Period_black, 965, 89, 39, 39);
+  image(Forwardslash_black, 1149, 89, 39, 39);
+}
+void showModifiers(){
+  //Add Keys
+  image(Return_black, 873, 183, 66, 39);
+  image(Shift_black, 873, 89, 78, 39);
+  image(Control_black, 873, 136, 44, 39);
+  image(Option_black, 928, 136, 44, 39);
+  image(Command_black, 982, 136, 56, 39);
+  image(Space_black, 873, 230, 156, 39);
+}
+void mousePressed(){
+  if (!modeDropdown.isMouseOver()) {    
+    modeDropdown.close();
+  }
+  if(pmouseX > 801 && pmouseX < 836 && pmouseY > 16 && pmouseY < 51){
+    if(!infoPopup){
+      infoPopup = true;
+    }
+  }
+  if(infoPopup){
+    if(pmouseX > 675 && pmouseX < 753 && pmouseY > 448 && pmouseY < 484){
+      infoPopup = false;
+    }
+  }
+  if(pmouseX > 884 && pmouseX < 1007 && pmouseY > 16 && pmouseY < 53){
+    if(!alphanumericTab){
+      alphanumericTab = true;
+      symbolsTab = false;
+      modifiersTab = false;
+    }
+  }
+  if(pmouseX > 1019 && pmouseX < 1142 && pmouseY > 16 && pmouseY < 53){
+    if(!symbolsTab){
+      alphanumericTab = false;
+      symbolsTab = true;
+      modifiersTab = false;
+    }
+  }
+  if(pmouseX > 1153 && pmouseX < 1276 && pmouseY > 16 && pmouseY < 53){
+    if(!modifiersTab){
+      alphanumericTab = false;
+      symbolsTab = false;
+      modifiersTab = true;
+    }
+  }
+  if(testerMode){
+      if(pmouseX > 650 && pmouseX < 728 && pmouseY > 145 && pmouseY < 181){
+      clear();
+      }
+  }
 }
