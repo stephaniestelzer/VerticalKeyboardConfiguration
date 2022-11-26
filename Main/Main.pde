@@ -654,7 +654,7 @@ void drawPopup(){
   textAlign(CENTER);
   fill(white);
   textSize(20);
-  text("How to use:\nClick on any key in the top palette that you would like to change.\nThen, select your replacement key in the bottom palette. The new key\nwill be automatically saved and ready for use!",
+  text("How to use:\nClick on any key in the left palette that you would like to change.\nThen, select your replacement key in the right palette. The new key\nwill be automatically saved and ready for use!",
        430, 310);
   image(Confirm_Key, 675, 448, 78, 36);
   popMatrix();
